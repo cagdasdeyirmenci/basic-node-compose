@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  node1:
+    image: node-web-app1
+    build: ./node1
+#    ports:
+#      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - common
+
+  node2:
+    image: node-web-app2
+    build: ./node2
+#    ports:
+#      - "8081:8080"
+    restart: unless-stopped
+    networks:
+      - common
+
+  node-gateway:
+    image: node-web-gateway
+    build: ./node-gateway
+    ports:
+      - "8082:8080"
+    environment:
+      - URL1=node1
+      - PORT1=8080
+      - URL2=node2
+      - PORT2=8080
+    restart: unless-stopped
+    networks:
+      - common
+
+networks:
+  common:
